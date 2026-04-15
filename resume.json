@@ -1,0 +1,140 @@
+{
+  "name": "AISHWARYA R",
+  "title": "DATA SCIENTIST",
+  "contact": {
+    "phone": "9444836259",
+    "email": "saiaishwarya93@yahoo.co.in",
+    "linkedin": "https://www.linkedin.com/in/aishwarya-r-595740169",
+    "linkedinLabel": "linkedin.com/in/aishwarya-r-595740169"
+  },
+  "education": [
+    {
+      "degree": "Masters in Science",
+      "field": "Statistics (Gold Medal)",
+      "years": "2014 – 2016",
+      "institution": "Madras Christian College",
+      "location": "Chennai, Tamil Nadu"
+    },
+    {
+      "degree": "Bachelors in Science",
+      "field": "Mathematics",
+      "years": "2011 – 2014",
+      "institution": "Sri Sathya Sai Institute of Higher Learning",
+      "location": "Anantapur, Andhra Pradesh"
+    }
+  ],
+  "skills": [
+    {
+      "category": "Domain",
+      "items": [
+        "HR Analytics, Upstream Finance (Oil and Gas), Upstream Sensor Data (Oil and Gas), Trading & Supply Distribution Operations"
+      ]
+    },
+    {
+      "category": "Competencies",
+      "items": [
+        "Python, R, SPSS-Modeler, Alteryx, C3.ai"
+      ]
+    },
+    {
+      "category": "BI Reporting",
+      "items": [
+        "Watson Analytics, Cognos Analytics 11, Spotfire, Power BI, PowerApps, Power Automate"
+      ]
+    },
+    {
+      "category": "Databases",
+      "items": [
+        "ADLS, IBMDB2"
+      ]
+    },
+    {
+      "category": "Tools",
+      "items": [
+        "Azure DevOps VSTS, GitHub, Databricks, Jupyter Notebook"
+      ]
+    }
+  ],
+  "certifications": [
+    "DIY (Do-It-Yourself) Coach",
+    "Data Visualization for Data Analyst — LinkedIn Course",
+    "C3 Data Science — Coursera",
+    "HR Analytics Master Course with Excel, Python and R — Udemy",
+    "Python: Working with Predictive Analytics — LinkedIn Course",
+    "Regression Analysis / Data Analytics in Regression — Udemy"
+  ],
+  "experience": [
+    {
+      "title": "Data Analytics Lead",
+      "company": "Shell Business Operations",
+      "period": "Sep 2023 – Present",
+      "bullets": [
+        "Spearhead DIY analytics initiatives to democratize data access and empower business users through citizen-developed solutions using Microsoft Power Platform.",
+        "Collaborate with business stakeholders to scope challenges, define KPIs, and align analytics solutions with broader organizational strategy.",
+        "Design and deliver dashboards and visualizations tailored for senior leadership, driving timely and impactful business outcomes.",
+        "Evaluate operational decisions through risk assessments and historical learnings, connecting insights across initiatives to support strategic goals.",
+        "Champion standardization and automation of analytics processes, integrating AI-driven efficiencies to scale impact across teams.",
+        "Led end-to-end data science projects from problem definition to deployment, delivering predictive models and actionable insights.",
+        "Citizen Data Scientist Enablement Program — Designed and implemented a company-wide initiative to train non-technical employees in building data solutions using Power BI and Power Apps.",
+        "Automated Business Insights Engine — Developed a low-code solution that automates weekly reporting and alerts for key business metrics, reducing manual effort by 60%."
+      ]
+    },
+    {
+      "title": "Data Scientist",
+      "company": "Shell Business Operations",
+      "period": "Apr 2018 – Aug 2023",
+      "bullets": [
+        "Manage and mentor team members on KPI definition, logical model design, and technical documentation for Alteryx workflows supporting Power BI reports.",
+        "Hands-on experience with Alteryx — Predictive, Parsing, and Transforms.",
+        "Develop analytical models using specialised tools based on business problem and data availability.",
+        "Delivered end-to-end AI solution for Electrical Submersible Pump (ESP) on cloud platform C3.ai; created Power BI dashboard giving leadership a consolidated view of ESP performance.",
+        "Performed uni-variate anomaly detection on wind turbine sensor data.",
+        "Automated the DDMRP (Demand Driven Material Requirements Planning) report in Alteryx.",
+        "Automated the Special Pricing Process for a lubricant business line in Alteryx, removing manual intervention at each stage.",
+        "Worked on Working Capital estimation for Gulf of Mexico asset using ARIMA and other forecasting models."
+      ]
+    },
+    {
+      "title": "Data Specialist (HR Analytics)",
+      "company": "IBM India",
+      "period": "Jun 2016 – Mar 2018",
+      "bullets": [
+        "Specialised in text mining for HR contact centre data (Voice of Customer analytics) using SPSS Modeler & Watson Analytics.",
+        "HR Contact Centre Profitability Analysis — text mining to identify patterns and develop solutions that reduced contact centre case volumes.",
+        "HR Analysis — used SPSS Modeler to find areas of improvement in client HR processes (Air Canada, BMW, P&G).",
+        "Analysed data from the Insights feature in IBM Watson dashboard and applied findings across multiple projects.",
+        "Recognised with Manager's Choice Award 2017 for 'Dare to Create Original Ideas' — produced a client-facing explainer video of the Voice of Customer analytics workflow, later adopted for business acquisition."
+      ]
+    }
+  ],
+  "otherProjects": [
+    {
+      "title": "Statistical Investigator",
+      "org": "Madras Christian College",
+      "period": "Apr 2015",
+      "bullets": [
+        "Designed questionnaire to gather data from students across the college to build future of the college.",
+        "Scheduled in-person data collection centres across the departments.",
+        "Analysed 1,000 student records and arrived at insights for the college planning committee."
+      ]
+    },
+    {
+      "title": "Building Knowledge in Current Affairs",
+      "org": "Quality Control Circle",
+      "period": "2010",
+      "bullets": [
+        "RCA till implementation, standardization, project Building knowledge in current affairs.",
+        "Won 1st prize at State level competition."
+      ]
+    },
+    {
+      "title": "Building Awareness Amongst Students' General Knowledge",
+      "org": "Quality Control Circle",
+      "period": "2007",
+      "bullets": [
+        "RCA till implementation, standardization, project Building awareness amongst students — general knowledge.",
+        "Won 2nd prize at International level competition."
+      ]
+    }
+  ]
+}
