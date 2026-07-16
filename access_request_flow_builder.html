@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Access Request Flow Builder</title>
+  <style>
+    :root{
+      --bg:#f6f8fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --line:#d7dee8;
+      --blue:#2f80c9; --blue2:#e8f3ff; --green:#2e9d61; --amber:#b7791f; --red:#d1495b;
+      --shadow:0 12px 30px rgba(31,41,55,.10); --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Segoe UI, Arial, sans-serif;background:linear-gradient(135deg,#f7fbff,#f2f5f9);color:var(--ink)}
+    header{padding:28px 34px 10px;}
+    h1{margin:0 0 8px;font-size:28px;letter-spacing:-.3px}
+    .sub{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+    .wrap{display:grid;grid-template-columns:360px minmax(560px,1fr);gap:22px;padding:20px 34px 34px;}
+    .card{background:rgba(255,255,255,.92);border:1px solid #e6edf5;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .panel{padding:20px}
+    .section{border-bottom:1px solid #edf1f6;padding-bottom:16px;margin-bottom:16px}
+    .section:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+    .label{font-weight:700;margin-bottom:10px;font-size:14px}.req{color:#d1495b;margin-right:3px}
+    .radio-row{display:flex;gap:16px;flex-wrap:wrap}.choice{display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;user-select:none}
+    input[type="radio"]{appearance:none;width:14px;height:14px;border:1.8px solid #9aa6b2;border-radius:50%;background:white;position:relative;margin:0}
+    input[type="radio"]:checked{border:4px solid var(--blue)}
+    input[type="text"], textarea, select{width:100%;border:1px solid #dce4ef;border-radius:10px;padding:9px 11px;font-family:inherit;font-size:13px;background:#fff;color:var(--ink)}
+    textarea{min-height:72px;resize:vertical}.hint{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.35}
+    .btnbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:11px;padding:10px 12px;font-weight:700;cursor:pointer;background:#eaf2fb;color:#155b96;font-size:13px}.btn.primary{background:var(--blue);color:#fff}.btn.warn{background:#fff1dc;color:#925c12}.btn.ghost{background:#f3f4f6;color:#374151}.btn:hover{filter:brightness(.97)}
+    .canvas{padding:20px;min-height:720px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px}.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:var(--blue2);color:#155b96;font-size:12px;font-weight:700}.summary{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.chip{padding:6px 9px;background:#f3f6fa;border:1px solid #e3e8ef;border-radius:999px;font-size:12px;color:#39465a}
+    .flow{display:flex;flex-direction:column;align-items:center;margin-top:14px}.node{position:relative;width:min(680px,100%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:0 8px 18px rgba(31,41,55,.06)}
+    .node[contenteditable="true"]{outline:0}.node[contenteditable="true"]:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(47,128,201,.14)}
+    .node-title{font-weight:800;margin-bottom:4px}.node-desc{font-size:13px;color:#4b5563;line-height:1.4}.start{border-left:7px solid var(--green)}.decision{border-left:7px solid var(--amber)}.action{border-left:7px solid var(--blue)}.end{border-left:7px solid var(--red)}
+    .arrow{height:34px;width:2px;background:var(--line);position:relative}.arrow:after{content:"";position:absolute;bottom:-1px;left:-5px;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--line)}
+    .branch{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:min(680px,100%);margin:0 auto}.branch .node{width:100%}.branch-label{text-align:center;font-size:12px;font-weight:700;color:#667085;margin:8px 0}.empty{display:none}.footer-note{font-size:12px;color:#6b7280;margin-top:16px;text-align:center}.edit-mode .node{cursor:text}.small{font-size:12px;color:var(--muted)}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}.leg{font-size:12px;color:#4b5563}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.g{background:var(--green)}.a{background:var(--amber)}.b{background:var(--blue)}.r{background:var(--red)}
+    @media (max-width:980px){.wrap{grid-template-columns:1fr}.canvas{min-height:unset}.branch{grid-template-columns:1fr}}
+    @media print{body{background:#fff}.wrap{display:block;padding:0}.panel{display:none}.card{box-shadow:none;border:0}.canvas{padding:10px}.btnbar,.topbar .right{display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Access Request Flow Builder</h1>
+    <p class="sub">Select the request attributes from the screenshot-style controls. The flow updates automatically and each step can be edited directly in the canvas.</p>
+  </header>
+  <main class="wrap">
+    <aside class="card panel">
+      <div class="section">
+        <div class="label"><span class="req">*</span>Request Type</div>
+        <div class="radio-row" data-field="requestType">
+          <label class="choice"><input type="radio" name="requestType" value="Add" checked> Add</label>
+          <label class="choice"><input type="radio" name="requestType" value="Change"> Change</label>
+          <label class="choice"><input type="radio" name="requestType" value="Delete"> Delete</label>
+        </div>
+      </div>
+      <div class="section">
+        <div class="label"><span class="req">*</span>Request For</div>
+        <div class="radio-row" data-field="requestFor">
+          <label class="choice"><input type="radio" name="requestFor" value="Single User" checked> Single User</label>
+          <label class="choice"><input type="radio" name="requestFor" value="Bulk User"> Bulk User</label>
+        </div>
+      </div>
+      <div class="section">
+        <div class="label"><span class="req">*</span>Role</div>
+        <div class="radio-row" data-field="role">
+          <label class="choice"><input type="radio" name="role" value="Global Admin"> Global Admin</label>
+          <label class="choice"><input type="radio" name="role" value="Report Viewer" checked> Report Viewer</label>
+          <label class="choice"><input type="radio" name="role" value="EAM Role (Workspace Admin)"> EAM Role (Workspace Admin)</label>
+        </div>
+      </div>
+      <div class="section">
+        <div class="label"><span class="req">*</span>Report View</div>
+        <div class="radio-row" data-field="reportView">
+          <label class="choice"><input type="radio" name="reportView" value="Individual+Direct Report View"> Individual+Direct Report View</label>
+          <label class="choice"><input type="radio" name="reportView" value="Cluster View"> Cluster View</label>
+          <label class="choice"><input type="radio" name="reportView" value="Global View"> Global View</label>
+        </div>
+        <p class="hint">Report View is optional for admin roles but recommended for Report Viewer requests.</p>
+      </div>
+      <div class="section">
+        <div class="label">Editable details</div>
+        <input id="requestor" type="text" placeholder="Requestor / Business approver" />
+        <div style="height:10px"></div>
+        <textarea id="notes" placeholder="Additional notes, exceptions, or evidence link"></textarea>
+        <p class="hint">These values appear in the flow and are included in exported JSON.</p>
+      </div>
+      <div class="btnbar">
+        <button class="btn primary" onclick="renderFlow()">Refresh flow</button>
+        <button class="btn" onclick="toggleEdit()">Toggle edit mode</button>
+        <button class="btn ghost" onclick="window.print()">Print / PDF</button>
+        <button class="btn warn" onclick="resetAll()">Reset</button>
+      </div>
+      <div class="btnbar">
+        <button class="btn" onclick="exportJSON()">Export JSON</button>
+        <label class="btn" for="importFile">Import JSON</label><input id="importFile" type="file" accept="application/json" style="display:none" onchange="importJSON(event)">
+      </div>
+      <p class="hint">Tip: Click any flow step after toggling edit mode to change the wording.</p>
+    </aside>
+    <section class="card canvas" id="canvasCard">
+      <div class="topbar">
+        <div>
+          <span class="badge">Dynamic access workflow</span>
+          <div class="summary" id="summary"></div>
+        </div>
+        <div class="right small" id="updated"></div>
+      </div>
+      <div class="legend">
+        <span class="leg"><span class="dot g"></span>Start / intake</span>
+        <span class="leg"><span class="dot a"></span>Decision</span>
+        <span class="leg"><span class="dot b"></span>Action</span>
+        <span class="leg"><span class="dot r"></span>Closure</span>
+      </div>
+      <div class="flow" id="flow"></div>
+      <div class="footer-note">Editable HTML prototype based on the provided request type, request for, role and report view options.</div>
+    </section>
+  </main>
+<script>
+let editMode = false;
+const $ = s => document.querySelector(s);
+const getVal = name => document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+const safe = value => (value || "Not provided").replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function node(type,title,desc){return `<div class="node ${type}" contenteditable="${editMode}"><div class="node-title">${title}</div><div class="node-desc">${desc}</div></div>`}
+function arrow(){return '<div class="arrow"></div>'}
+function buildSteps(){
+  const requestType=getVal('requestType'), requestFor=getVal('requestFor'), role=getVal('role'), reportView=getVal('reportView');
+  const requestor=$('#requestor').value.trim(), notes=$('#notes').value.trim();
+  const typeVerb = requestType === 'Add' ? 'Grant new access' : requestType === 'Change' ? 'Modify existing access' : 'Remove existing access';
+  const userEvidence = requestFor === 'Bulk User' ? 'Upload the approved bulk user list, validate email IDs, remove duplicates and confirm all users belong to the expected population.' : 'Validate the single user email ID, line manager or sponsor, and business justification.';
+  const roleCheck = role.includes('Global Admin') ? 'High privilege path: require explicit business owner approval, security review and evidence of need.' : role.includes('EAM') ? 'Workspace admin path: validate workspace ownership, admin scope and segregation of duty impact.' : 'Viewer path: validate report scope and view level requested.';
+  const viewCheck = role === 'Report Viewer' ? `Apply report visibility as ${reportView || 'selected view'} and confirm that data access aligns with business need.` : 'Report view is not mandatory for this admin role, but document any report or workspace scope limitations.';
+  return [
+    node('start','1. Intake request',`${typeVerb} for <b>${safe(requestFor)}</b>. Capture requestor, sponsor, role, report view and evidence. Requestor: <b>${safe(requestor)}</b>.`),
+    arrow(),
+    node('decision','2. Validate request completeness',`${userEvidence} Notes: ${safe(notes)}.`),
+    arrow(),
+    node('decision','3. Determine approval route',`${roleCheck}`),
+    arrow(),
+    `<div class="branch"><div><div class="branch-label">Approval available</div>${node('action','4A. Process access change',`${requestType} access for <b>${safe(role)}</b>. ${viewCheck}`)}</div><div><div class="branch-label">Approval missing / mismatch</div>${node('decision','4B. Return for clarification','Send request back to the requester with missing evidence, approval gaps or scope mismatch. Pause processing until updated.')}</div></div>`,
+    arrow(),
+    node('action','5. Perform control checks','Verify role assignment, workspace/report mapping, RLS or regional mapping if applicable, and confirm no unintended additional access is granted.'),
+    arrow(),
+    node('end','6. Confirm and close','Notify requester and approver with completion status, effective date, access scope and audit reference. Update access tracker.')
+  ].join('');
+}
+function renderFlow(){
+  ['requestType','requestFor','role','reportView'].forEach(n => {});
+  $('#summary').innerHTML = ['requestType','requestFor','role','reportView'].map(n=>`<span class="chip">${safe(getVal(n) || 'No ' + n)}</span>`).join('');
+  $('#flow').innerHTML = buildSteps();
+  $('#updated').textContent = 'Updated: ' + new Date().toLocaleString();
+  $('#canvasCard').classList.toggle('edit-mode', editMode);
+}
+function toggleEdit(){editMode=!editMode; renderFlow();}
+function resetAll(){
+  document.querySelector('input[name="requestType"][value="Add"]').checked=true;
+  document.querySelector('input[name="requestFor"][value="Single User"]').checked=true;
+  document.querySelector('input[name="role"][value="Report Viewer"]').checked=true;
+  document.querySelectorAll('input[name="reportView"]').forEach(x=>x.checked=false);
+  $('#requestor').value=''; $('#notes').value=''; renderFlow();
+}
+function exportJSON(){
+  const data={requestType:getVal('requestType'),requestFor:getVal('requestFor'),role:getVal('role'),reportView:getVal('reportView'),requestor:$('#requestor').value,notes:$('#notes').value,htmlFlow:$('#flow').innerHTML,exportedAt:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='access_request_flow.json'; a.click(); URL.revokeObjectURL(a.href);
+}
+function importJSON(e){
+  const file=e.target.files[0]; if(!file) return; const reader=new FileReader();
+  reader.onload=()=>{try{const d=JSON.parse(reader.result); ['requestType','requestFor','role','reportView'].forEach(n=>{if(d[n]){const el=document.querySelector(`input[name="${n}"][value="${CSS.escape(d[n])}"]`); if(el) el.checked=true;}}); $('#requestor').value=d.requestor||''; $('#notes').value=d.notes||''; renderFlow();}catch(err){alert('Invalid JSON file.')}};
+  reader.readAsText(file);
+}
+document.querySelectorAll('input[type="radio"], #requestor, #notes').forEach(el=>el.addEventListener('input',renderFlow));
+renderFlow();
+</script>
+</body>
+</html>
